@@ -1,13 +1,12 @@
 import React from 'react'
 import "./index.css"
+import Header from './sections/Header'
 
 const App = () => {
   return (
-    <div>
-      <h1 className='bg-s1'>
-        hello world
-      </h1>
-    </div>
+    <main className='overflow-hidden'>
+      <Header/>
+    </main>
   )
 }
 
