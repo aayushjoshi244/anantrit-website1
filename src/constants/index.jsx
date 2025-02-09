@@ -49,73 +49,73 @@ export const features = [
   export const faq = [
     {
       id: "0",
-      question: "How easy is it to setup Xora?",
+      question: "What is ANANTRIT?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "ANANTRIT is a robotics and AI company dedicated to building intelligent automation solutions, including AI-powered robots and smart prosthetics."
     },
     {
       id: "1",
-      question: "Can I integrate Xora with other platforms?",
+      question: "How do ANANTRIT’s AI-powered robots work?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "Our robots use advanced AI algorithms and computer vision to navigate, learn, and interact with their environment for various industrial and assistive applications."
     },
     {
       id: "2",
-      question: "How often do you add new content?",
+      question: "Can I integrate ANANTRIT’s solutions into my business?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "Yes! Our AI and robotics solutions can be customized and integrated into industries like healthcare, manufacturing, and logistics."
     },
     {
       id: "3",
-      question: "What your refund policy?",
+      question: "What industries benefit from ANANTRIT’s technologies?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "Our innovations serve multiple industries, including healthcare, industrial automation, robotics research, and assistive technology."
     },
     {
       id: "4",
-      question: "Do you have corporate plans?",
+      question: "Do you offer AI-driven prosthetics for individuals?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "Yes! We are developing next-generation prosthetic hands that are voice-controlled and AI-enhanced for better adaptability and functionality."
     },
     {
       id: "5",
-      question: "What happens when I’m out of storage?",
+      question: "What makes ANANTRIT’s AI different?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "Our AI models are built with adaptive learning capabilities, allowing our robots and prosthetics to improve over time based on user interaction."
     },
     {
       id: "6",
-      question: "Can I upgrade my plan?",
+      question: "Can I get a custom AI solution from ANANTRIT?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "Absolutely! We provide tailored AI and robotics solutions based on your unique business or research needs."
     },
     {
       id: "7",
-      question: "How do I invite my team?",
+      question: "How do I get started with ANANTRIT?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "You can explore our products and contact us for collaborations or custom AI solutions through our website."
     },
     {
       id: "8",
-      question: "Do you offer training for individuals and teams?",
+      question: "Does ANANTRIT provide training and support?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
+        "Yes, we offer training and ongoing support for businesses and individuals implementing our AI and robotics solutions."
     },
     {
       id: "9",
-      question: "I’m locked out of my account what do I do?",
+      question: "Where can I learn more about ANANTRIT’s latest innovations?",
       answer:
-        "Absolutely! Not only you can upgrade your plan at any time but you also get a prorated discount giving you maximum value for your subscription.",
-    },
+        "Follow us on our social media channels or check our blog for updates on our latest AI and robotics breakthroughs."
+    }
   ];
   
   export const plans = [
     {
       id: "0",
-      title: "Core",
+      title: "Prosthetic Parts",
       priceMonthly: 19,
       priceYearly: 12,
-      caption: "Best for solo creators",
+      caption: "For Physically Disabled",
       features: [
         "100MB Cloud storage",
         "100+ prompt templates",
@@ -127,10 +127,10 @@ export const features = [
     },
     {
       id: "1",
-      title: "Overdrive",
+      title: "Desktop Management Robot",
       priceMonthly: 79,
       priceYearly: 59,
-      caption: "Most popular plan",
+      caption: "",
       features: [
         "All Starter features",
         "1TB additional storage",
