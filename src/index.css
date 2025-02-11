@@ -315,3 +315,14 @@
 
     /*  END of Footer*/
 }
+
+.boxy{
+    position: relative;
+    left: 170px;
+    bottom: 90px;
+}
+
+.logo{
+    position: relative;
+    top: 0px;
+}

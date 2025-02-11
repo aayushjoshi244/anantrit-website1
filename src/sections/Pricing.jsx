@@ -22,13 +22,13 @@ const Pricing = () => {
                 className={clsx("pricing-head_btn", monthly && "text-p4")}
                 onClick={() => setMonthly(true)}
               >
-                Monthly
+                Parts
               </button>
               <button
                 className={clsx("pricing-head_btn", !monthly && "text-p4")}
                 onClick={() => setMonthly(false)}
               >
-                Annual
+                Annual Maintenance 
               </button>
 
               <div
