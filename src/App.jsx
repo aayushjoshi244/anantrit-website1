@@ -9,28 +9,25 @@ import Faq from "./sections/Faq";
 import Testimonials from "./sections/Testimonials";
 import Download from "./sections/Download";
 import Footer from "./sections/Footer";
-import Signup from "./sections/Signup"; // Import Signup page
+import Signup from "./sections/Signup"; 
 
 const Layout = () => {
   const location = useLocation(); // Get current route
 
   return (
-    <main className="overflow-hidden">
-      {/* Hide Header only on Signup page */}
-      {location.pathname !== "/signup" && <Header />} 
-      
-      <Routes>
-        <Route path="/" element={<Hero />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/features" element={<Features />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/faq" element={<Faq />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        <Route path="/download" element={<Download />} />
-      </Routes>
+    <div className="overflow-hidden">
+      {/* Show Header only if the route is NOT Signup */}
+      {location.pathname !== "/signup" && <Header />}
 
-      {location.pathname !== "/signup" && <Footer />} {/* Hide Footer on Signup */}
-    </main>
+      {/* Page Content */}
+      <div className="content">
+        <Routes>
+          <Route path="/signup" element={<Signup />} /> {/* Signup Page */}
+        </Routes>
+      </div>
+
+      
+    </div>
   );
 };
 
@@ -38,6 +35,13 @@ const App = () => {
   return (
     <Router>
       <Layout />
+      <Hero />
+      <Features />
+      <Pricing />
+      <Faq />
+      <Testimonials />
+      <Download />
+      <Footer />
     </Router>
   );
 };
