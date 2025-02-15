@@ -418,7 +418,7 @@ export const features = [
       id: "2",
       title: "Instagram",
       icon: "/images/socials/instagram.svg",
-      url: "#",
+      url: "https://www.instagram.com/anantrit.tech/",
     },
     {
       id: "3",

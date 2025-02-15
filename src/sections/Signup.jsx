@@ -7,7 +7,7 @@ const Signup = () => {
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gray-900 text-white">
       {/* Background Logo */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-10">
+      <div className=" absolute inset-0 flex items-center justify-center opacity-10 top-20 left-3">
         <img
           src="/images/anantrit.svg"
           alt="Anantrit Logo"

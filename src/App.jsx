@@ -11,22 +11,37 @@ import Download from "./sections/Download";
 import Footer from "./sections/Footer";
 import Signup from "./sections/Signup"; 
 
+const Home = () => {
+  return (
+    <>
+      <Hero />
+      <Features />
+      <Pricing />
+      <Faq />
+      <Testimonials />
+      <Download />
+    </>
+  );
+};
+
 const Layout = () => {
-  const location = useLocation(); // Get current route
+  const location = useLocation();
 
   return (
-    <div className="overflow-hidden">
-      {/* Show Header only if the route is NOT Signup */}
-      {location.pathname !== "/signup" && <Header />}
+    <div className="flex flex-col min-h-screen overflow-hidden">
+      {/* Show Header on all pages */}
+      <Header />
 
       {/* Page Content */}
-      <div className="content">
+      <div className="flex-grow">
         <Routes>
-          <Route path="/signup" element={<Signup />} /> {/* Signup Page */}
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </div>
 
-      
+      {/* Show Footer on all pages */}
+      <Footer />
     </div>
   );
 };
@@ -35,13 +50,6 @@ const App = () => {
   return (
     <Router>
       <Layout />
-      <Hero />
-      <Features />
-      <Pricing />
-      <Faq />
-      <Testimonials />
-      <Download />
-      <Footer />
     </Router>
   );
 };

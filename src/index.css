@@ -332,3 +332,18 @@
     bottom: 250px;
     left: 230px;
 }
+
+@keyframes glow {
+    0% { text-shadow: 0 0 5px #ffffff; }
+    50% { text-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff; }
+    100% { text-shadow: 0 0 5px #ffffff; }
+  }
+  
+  .hover\\:text-glow:hover {
+    animation: glow 1s infinite alternate;
+  }
+.user-button{
+    position: relative;
+    bottom: 150px;
+}  
+

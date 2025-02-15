@@ -2,18 +2,39 @@ import { Element, Link as LinkScroll } from "react-scroll";
 import Button from "../components/Button.jsx";
 import LoginModal from "../sections/LoginModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate(); // Hook for navigation
   return (
     <section className="relative pt-60 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32">
       <Element name="hero">
         <div className="flex gap-4 max-lg:justify-center max-lg:mt-8">
+          {/* Sign In / Sign Up Button for Large Screens */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="boxy relative py-3 px-6 text-white font-semibold rounded-lg bg-white/10 border border-blue-500 shadow-lg backdrop-blur-md -webkit-backdrop-blur-md transition-all duration-300 hover:bg-blue-500/20"
+            className="hidden lg:block boxy relative py-3 px-6 text-white font-semibold rounded-lg bg-white/10 border border-blue-500 shadow-lg backdrop-blur-md transition-all duration-300 hover:bg-blue-500/20"
           >
             Sign In / Sign Up
+          </button>
+
+          {/* Mobile Version - Hidden on Large Screens */}
+          <button
+            className="user-button lg:hidden z-2 size-10 border-2 border-s4/25 rounded-full flex justify-center items-center transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_#1959AD]"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <svg
+              width="30" /* Adjusted size */
+              height="30"
+              viewBox="0 0 24 24"
+              fill="#1959AD"
+              xmlns="http://www.w3.org/2000/svg"
+              className="transition-all duration-300 hover:fill-blue-500"
+            >
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6H4z" />
+            </svg>
           </button>
         </div>
         <div className="container">

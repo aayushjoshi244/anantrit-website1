@@ -5,7 +5,6 @@ import clsx from "clsx";
 const Header = () => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-   // State for login modal
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,7 +42,7 @@ const Header = () => {
       >
         <div className="container flex h-14 items-center max-lg:px-5">
           <a className="lg:hidden flex-1 cursor-pointer z-2">
-            <img src="/images/anantrit.svg" width={50} height={55} alt="logo" />
+            <img src="/images/anantrit.svg" width={35} height={55} alt="logo" />
           </a>
 
           <div
