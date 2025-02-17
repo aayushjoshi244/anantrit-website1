@@ -321,7 +321,7 @@ export const features = [
           d="M2.99217 26.0948L11.7925 28.1727C12.7018 28.4018 13.5672 27.6164 13.5672 26.5856V19.272C13.5672 18.3721 12.9072 17.6358 12.1005 17.6358H3.30021C2.49352 17.6358 1.8335 18.3721 1.8335 19.272V24.4913C1.8335 25.2603 2.31748 25.9312 2.99217 26.0948Z"
           fill="#EAEDFF"
         />
-      </svg>
+      </svg> 
     );
   };
   
@@ -410,9 +410,9 @@ export const features = [
     },
     {
       id: "1",
-      title: "Threads",
-      icon: "/images/socials/threads.svg",
-      url: "#",
+      title: "LinkedIn",
+      icon: "/images/socials/link.svg",
+      url: "https://linkedin.com/company/anantrit",
     },
     {
       id: "2",

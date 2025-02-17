@@ -2,11 +2,10 @@ import { Element, Link as LinkScroll } from "react-scroll";
 import Button from "../components/Button.jsx";
 import LoginModal from "../sections/LoginModal";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
   return (
     <section className="relative pt-60 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32">
       <Element name="hero">
@@ -21,12 +20,12 @@ const Hero = () => {
 
           {/* Mobile Version - Hidden on Large Screens */}
           <button
-            className="user-button lg:hidden z-2 size-10 border-2 border-s4/25 rounded-full flex justify-center items-center transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_#1959AD]"
+            className="user-button lg:hidden fixed bottom-4  z-50 size-12 border-2 border-s4/25 rounded-full flex justify-center items-center transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_#1959AD] active:scale-95"
             onClick={() => setIsModalOpen(true)}
           >
             <svg
-              width="30" /* Adjusted size */
-              height="30"
+              width="32" /* Slightly bigger for better tap experience */
+              height="32"
               viewBox="0 0 24 24"
               fill="#1959AD"
               xmlns="http://www.w3.org/2000/svg"
@@ -50,9 +49,9 @@ const Hero = () => {
               integrated—pushing the boundaries of robotics and AI to create
               smarter, more efficient solutions.
             </p>
-            <LinkScroll to="features" offset={-100} spy smooth>
+            <Link to="/signup" offset={-100} spy smooth>
               <Button icon="/images/zap.svg">Join US</Button>
-            </LinkScroll>
+            </Link>
           </div>
 
           <div className="absolute -top-32 left-[calc(50%-340px)] w-[1230px] pointer-events-none hero-img_res">
