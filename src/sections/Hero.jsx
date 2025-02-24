@@ -42,7 +42,7 @@ const Hero = () => {
               AI & Robotics
             </div>
             <h1 className="mb-6 h1 text-p4 uppercase max-lg:mb-7 max-lg:h2 max-md:mb-4 max-md:text-5xl max-md:leading-12">
-              Amazingly simple
+              Redefining the KAL
             </h1>
             <p className="max-w-440 mb-14 body-2 max-md:mb-10">
               We designed Anantrit to be innovative, intelligent, and seamlessly

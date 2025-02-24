@@ -24,6 +24,7 @@ const Download = () => {
               <p className="body-1 mb-10 max-w-md">
                 Try it now for free on iOS, Android, PC, Web - whatever your
                 flavor, we've got you covered.
+                <h1>Comming Soon</h1>
               </p>
 
               <ul className="flex flex-wrap items-center gap-6">
