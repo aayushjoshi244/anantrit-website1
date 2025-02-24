@@ -404,8 +404,8 @@ export const features = [
   export const socials = [
     {
       id: "0",
-      title: "x",
-      icon: "/images/socials/x.svg",
+      title: "Threads",
+      icon: "/images/socials/threads.svg",
       url: "#",
     },
     {
