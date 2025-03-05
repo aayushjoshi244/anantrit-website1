@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Element } from "react-scroll";
+import { Link } from "react-router-dom";
 import Button from "../components/Button.jsx";
 
-const ReviewsPage = () => {
+const Posts = () => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState({ text: "", media: null });
 
@@ -21,6 +22,13 @@ const ReviewsPage = () => {
           <p className="max-w-440 mb-10 body-2 text-center mx-auto">
             Share your experiences, thoughts, and media about Anantrit.
           </p>
+          
+          {/* Navigation Link */}
+          <div className="text-center mb-6">
+            <Link to="/posts" className="text-blue-500 hover:underline">
+              Go to Posts
+            </Link>
+          </div>
 
           {/* Review Input Section */}
           <div className="max-w-xl mx-auto p-6 bg-white/10 border border-blue-500 rounded-lg shadow-lg backdrop-blur-md">
@@ -73,4 +81,4 @@ const ReviewsPage = () => {
   );
 };
 
-export default ReviewsPage;
+export default Posts;
