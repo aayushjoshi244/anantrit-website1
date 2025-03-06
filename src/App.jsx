@@ -10,12 +10,8 @@ import Testimonials from "./sections/Testimonials";
 import Download from "./sections/Download";
 import Footer from "./sections/Footer";
 import Signup from "./sections/Signup"; 
-import Posts from "./activities/posts";  
-// import UploadCode from "./activities/UploadCode";  
-// import Support from "./activities/Support";  
-// import OtherPerks from "./activities/OtherPerks";  
+import PostSection from "./activities/posts";  
 
-// Create Auth Context
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -73,10 +69,17 @@ const PrivateRoute = ({ element }) => {
 
 // Layout Component
 const Layout = () => {
+  const location = useLocation();
+
+  // Define routes where Header & Footer should NOT be visible
+  const hideLayoutRoutes = ["/posts"]; 
+
+  const shouldHideLayout = hideLayoutRoutes.includes(location.pathname);
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-      {/* Show Header on all pages */}
-      <Header />
+      {/* Conditionally Render Header */}
+      {!shouldHideLayout && <Header />}
 
       {/* Page Content */}
       <div className="flex-grow">
@@ -85,15 +88,12 @@ const Layout = () => {
           <Route path="/signup" element={<Signup />} />
 
           {/* Protected Routes (Only visible when logged in) */}
-          <Route path="/posts" element={<PrivateRoute element={<Posts />} />} />
-          {/* <Route path="/upload-code" element={<PrivateRoute element={<UploadCode />} />} />
-          <Route path="/support" element={<PrivateRoute element={<Support />} />} />
-          <Route path="/other-perks" element={<PrivateRoute element={<OtherPerks />} />} /> */}
+          <Route path="/posts" element={<PrivateRoute element={<PostSection />} />} />
         </Routes>
       </div>
 
-      {/* Show Footer on all pages */}
-      <Footer />
+      {/* Conditionally Render Footer */}
+      {!shouldHideLayout && <Footer />}
     </div>
   );
 };
