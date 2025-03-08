@@ -93,22 +93,27 @@ const PostSection = () => {
       {/* Left Sidebar */}
       <div className="w-[200px] p-4 bg-gray-800 bg-opacity-75 min-h-screen flex flex-col justify-between">
         <nav className="space-y-8">
-          <Button className="flex items-center gap-3 text-lg w-full max-w-[300px] justify-start px-6 py-3">
-            <FaHome className="w-5 h-5 inline-block flex-shrink-0" /> <span className="inline-block ml-2">Home</span>
+          <Button className="flex items-center gap-3 text-lg w-full max-w-[400px] justify-start px-6 py-3">
+            <FaHome className="w-5 h-5 inline-block flex-shrink-0" />{" "}
+            <span className="inline-block ml-2">Home</span>
           </Button>
           <Button className="flex items-center gap-3 text-lg w-full justify-start">
-            <FaEnvelope className="w-5 h-5 inline-block flex-shrink-0" /> <span className="inline-block ml-2">Message</span>
+            <FaEnvelope className="w-5 h-5 inline-block flex-shrink-0" />{" "}
+            <span className="inline-block ml-2">Message</span>
           </Button>
           <Button className="flex items-center gap-3 text-lg w-full justify-start">
-            <FaUpload className="w-5 h-5 inline-block flex-shrink-0" /> <span className="inline-block ml-2">Repository</span>
+            <FaUpload className="w-5 h-5 inline-block flex-shrink-0" />{" "}
+            <span className="inline-block ml-2">Repository</span>
           </Button>
           <Button className="flex items-center gap-3 text-lg w-full justify-start">
-            <FaEdit className="w-5 h-5 inline-block flex-shrink-0" /> <span className="inline-block ml-2">New Post</span>
+            <FaEdit className="w-5 h-5 inline-block flex-shrink-0" />{" "}
+            <span className="inline-block ml-2">New Post</span>
           </Button>
         </nav>
         <div className="mt-auto">
           <Button className="flex items-center justify-center w-full py-2 mt-auto space-x-2">
-            <FaUser className="w-5 h-5 inline-block flex-shrink-0" /> <span className="inline-block ml-2">Profile</span>
+            <FaUser className="w-5 h-5 inline-block flex-shrink-0" />{" "}
+            <span className="inline-block ml-2">Profile</span>
           </Button>
         </div>
       </div>
@@ -195,7 +200,6 @@ const PostSection = () => {
           )}
         </div>
       </div>
-      
 
       {/* Right Sidebar */}
       <div className="w-[200px] p-5 bg-gray-800 bg-opacity-75 min-h-screen flex flex-col justify-between">
@@ -211,7 +215,13 @@ const PostSection = () => {
         </div>
 
         {/* Logout button at the bottom */}
-        <Button className="flex items-center justify-center w-full py-2 mt-auto space-x-2">
+        <Button
+          className="flex items-center justify-center w-full py-2 mt-auto space-x-2"
+          onClick={() => {
+            localStorage.removeItem("currentUser");
+            window.location.reload();
+          }}
+        >
           <FaSignOutAlt className="w-5 h-5 inline-block flex-shrink-0" />
           <span className="inline-block ml-2">Logout</span>
         </Button>
