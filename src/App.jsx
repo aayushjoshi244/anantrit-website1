@@ -10,7 +10,9 @@ import Testimonials from "./sections/Testimonials";
 import Download from "./sections/Download";
 import Footer from "./sections/Footer";
 import Signup from "./sections/Signup"; 
-import PostSection from "./activities/posts";  
+import PostSection from "./activities/posts"; 
+import Repository from "./activities/UploadCode";
+import ProfilePage from "./activities/profile"; 
 
 const AuthContext = createContext();
 
@@ -72,28 +74,30 @@ const Layout = () => {
   const location = useLocation();
 
   // Define routes where Header & Footer should NOT be visible
-  const hideLayoutRoutes = ["/posts"]; 
+  const fullScreenRoutes = ["/posts", "/profile"]; 
 
-  const shouldHideLayout = hideLayoutRoutes.includes(location.pathname);
+  const isFullScreenRoute = fullScreenRoutes.some(route => 
+    location.pathname === route || location.pathname.startsWith(`${route}/`)
+  );
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/* Conditionally Render Header */}
-      {!shouldHideLayout && <Header />}
+      {!isFullScreenRoute && <Header />}
 
       {/* Page Content */}
-      <div className="flex-grow">
+      <div className={isFullScreenRoute ? "flex-grow" : "flex-grow"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
-
-          {/* Protected Routes (Only visible when logged in) */}
           <Route path="/posts" element={<PrivateRoute element={<PostSection />} />} />
+          <Route path="/UploadCode" element={<Repository />} />
+          <Route path="/profile" element={<PrivateRoute element={<ProfilePage />} />} />
         </Routes>
       </div>
 
       {/* Conditionally Render Footer */}
-      {!shouldHideLayout && <Footer />}
+      {!isFullScreenRoute && <Footer />}
     </div>
   );
 };
