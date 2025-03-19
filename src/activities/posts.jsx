@@ -13,6 +13,7 @@ import {
   FaDownload,
   FaShare,
   FaStar,
+  FaShoppingCart,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button.jsx";
@@ -417,6 +418,10 @@ const MainSection = () => {
           <Button className="flex items-center gap-3 text-lg w-full justify-start">
             <FaEdit className="w-5 h-5 inline-block flex-shrink-0" />{" "}
             <span className="inline-block ml-2">New Post</span>
+          </Button>
+          <Button className="flex items-center gap-3 text-lg w-full justify-start">
+            <FaShoppingCart className="w-5 h-5 inline-block flex-shrink-0" />{" "}
+            <span className="inline-block ml-2">Let's Shop</span>
           </Button>
         </nav>
         <div className="mt-auto">
