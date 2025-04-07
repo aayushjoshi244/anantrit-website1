@@ -1,5 +1,7 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { useAuthStore } from "./store/useAuthStore"; // Import Zustand store
+import { axiosInstance } from "./lib/axios"; // Import axios instance
 import "./index.css";
 import Header from "./sections/Header";
 import Hero from "./sections/Hero";
@@ -13,41 +15,6 @@ import Signup from "./sections/Signup";
 import PostSection from "./activities/posts"; 
 import Repository from "./activities/UploadCode";
 import ProfilePage from "./activities/profile"; 
-
-const AuthContext = createContext();
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-// Auth Provider to manage login state
-const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Simulating login state persistence (e.g., from localStorage)
-  useEffect(() => {
-    const savedAuth = localStorage.getItem("isAuthenticated");
-    if (savedAuth === "true") {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const login = () => {
-    setIsAuthenticated(true);
-    localStorage.setItem("isAuthenticated", "true");
-  };
-
-  const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("isAuthenticated");
-  };
-
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
 
 // Home Page Component
 const Home = () => {
@@ -65,28 +32,22 @@ const Home = () => {
 
 // Private Route Component to Protect Certain Pages
 const PrivateRoute = ({ element }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? element : <Navigate to="/signup" replace />;
+  const { authUser } = useAuthStore();
+  return authUser ? element : <Navigate to="/signup" replace />;
 };
 
 // Layout Component
 const Layout = () => {
   const location = useLocation();
-
-  // Define routes where Header & Footer should NOT be visible
   const fullScreenRoutes = ["/posts", "/profile"]; 
-
   const isFullScreenRoute = fullScreenRoutes.some(route => 
     location.pathname === route || location.pathname.startsWith(`${route}/`)
   );
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-      {/* Conditionally Render Header */}
       {!isFullScreenRoute && <Header />}
-
-      {/* Page Content */}
-      <div className={isFullScreenRoute ? "flex-grow" : "flex-grow"}>
+      <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
@@ -95,8 +56,6 @@ const Layout = () => {
           <Route path="/profile" element={<PrivateRoute element={<ProfilePage />} />} />
         </Routes>
       </div>
-
-      {/* Conditionally Render Footer */}
       {!isFullScreenRoute && <Footer />}
     </div>
   );
@@ -104,12 +63,22 @@ const Layout = () => {
 
 // App Component with AuthProvider
 const App = () => {
+  const {checkAuth, isCheckingAuth} = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  if (isCheckingAuth) {
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>;
+  }
+
   return (
-    <AuthProvider>
       <Router>
         <Layout />
       </Router>
-    </AuthProvider>
   );
 };
 
