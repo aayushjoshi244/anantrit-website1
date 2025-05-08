@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore"; // Import Zustand store
 import { axiosInstance } from "./lib/axios"; // Import axios instance
 import "./index.css";
@@ -11,10 +17,12 @@ import Faq from "./sections/Faq";
 import Testimonials from "./sections/Testimonials";
 import Download from "./sections/Download";
 import Footer from "./sections/Footer";
-import Signup from "./sections/Signup"; 
-import PostSection from "./activities/posts"; 
+import LoginModal from "./sections/LoginModal";
+import Signup from "./sections/Signup";
+import PostSection from "./activities/posts";
 import Repository from "./activities/UploadCode";
-import ProfilePage from "./activities/profile"; 
+import ProfilePage from "./activities/profile";
+import { Toaster } from "react-hot-toast";
 
 // Home Page Component
 const Home = () => {
@@ -39,9 +47,10 @@ const PrivateRoute = ({ element }) => {
 // Layout Component
 const Layout = () => {
   const location = useLocation();
-  const fullScreenRoutes = ["/posts", "/profile"]; 
-  const isFullScreenRoute = fullScreenRoutes.some(route => 
-    location.pathname === route || location.pathname.startsWith(`${route}/`)
+  const fullScreenRoutes = ["/posts", "/profile"];
+  const isFullScreenRoute = fullScreenRoutes.some(
+    (route) =>
+      location.pathname === route || location.pathname.startsWith(`${route}/`)
   );
 
   return (
@@ -49,12 +58,22 @@ const Layout = () => {
       {!isFullScreenRoute && <Header />}
       <div className="flex-grow">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={authUser ? <Home /> : <Navigate to="/login" />}
+          />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/posts" element={<PrivateRoute element={<PostSection />} />} />
+          <Route
+            path="/posts"
+            element={<PrivateRoute element={<PostSection />} />}
+          />
           <Route path="/UploadCode" element={<Repository />} />
-          <Route path="/profile" element={<PrivateRoute element={<ProfilePage />} />} />
+          <Route
+            path="/profile"
+            element={<PrivateRoute element={<ProfilePage />} />}
+          />
         </Routes>
+        <Toaster />
       </div>
       {!isFullScreenRoute && <Footer />}
     </div>
@@ -63,22 +82,24 @@ const Layout = () => {
 
 // App Component with AuthProvider
 const App = () => {
-  const {checkAuth, isCheckingAuth} = useAuthStore();
+  const { checkAuth, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   if (isCheckingAuth) {
-    return <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-    </div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
-      <Router>
-        <Layout />
-      </Router>
+    <Router>
+      <Layout />
+    </Router>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore"; // Updated import path
-
+import toast from 'react-hot-toast';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -15,27 +15,29 @@ const Signup = () => {
 
   const [error, setError] = useState(null);
 
-  // Handle input changes
+ 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
+
+  const validateForm = () => {
+    if (!user.fullName.trim()) return toast.error("Full name is required");
+    if (!user.email.trim()) return toast.error("Email is required")
+    if (!/\S+@\S+\.\S+/.test(user.email)) return toast.error("Invalid email format");
+    if (!user.password.trim()) return toast.error("Password is required");
+    if (user.password.length < 8) return toast.error("Password must be at least 6 characters");
+
+    return true;
+  }
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!user.fullName || !user.email || !user.password) {
-      alert("Please fill in all fields.");
-      return;
-    }
+    const success = validateForm()
 
-    try {
-      await signup(user); // Using Zustand's signup action
-      navigate("/posts");
-    } catch (err) {
-      setError(err.response?.data?.message || "Signup failed. Try again.");
-    }
-  };
+    if(success==true) signup()
+  }
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gray-900 text-white">
