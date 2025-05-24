@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBriefcase, FaGraduationCap, FaCamera, FaCheck, FaSave, FaArrowLeft } from "react-icons/fa";
+import {
+  FaTimes,
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaBriefcase,
+  FaGraduationCap,
+  FaCamera,
+  FaCheck,
+  FaSave,
+  FaArrowLeft,
+} from "react-icons/fa";
 
 const ProfilePage = () => {
   // Profile state
@@ -12,9 +24,73 @@ const ProfilePage = () => {
     address: "",
     userType: "student", // "student" or "professional"
     institution: "", // college/school name or company name
-    profilePhoto: null
+    profilePhoto: null,
   });
-  
+
+  const [otp, setOtp] = useState("");
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpError, setOtpError] = useState("");
+
+  const handleVerifyCheckbox = async (e) => {
+    if (!profileData.phone) {
+      alert("Please enter a phone number first");
+      return;
+    }
+
+    if (!profileData.isPhoneVerified) {
+      // Send OTP
+      try {
+        // Replace with your actual OTP sending API call
+        await sendOtpToPhone(profileData.phone);
+        setOtpSent(true);
+        setShowOtpModal(true);
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        setOtpError("Failed to send OTP");
+      }
+    } else {
+      // If unchecking, just update the state
+      handleInputChange(e);
+    }
+  };
+
+  const verifyOtp = async () => {
+    try {
+      // Replace with your actual OTP verification API call
+      const isValid = await verifyOtpWithServer(profileData.phone, otp);
+      if (isValid) {
+        setProfileData({
+          ...profileData,
+          isPhoneVerified: true,
+        });
+        setShowOtpModal(false);
+        setOtp("");
+        setOtpError("");
+      } else {
+        setOtpError("Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      setOtpError("Error verifying OTP");
+    }
+  };
+
+  // Mock functions - replace with actual API calls
+  const sendOtpToPhone = async (phone) => {
+    console.log(`OTP sent to ${phone}`);
+    // In a real app, you would call your backend API here
+    // which would then send an SMS with the OTP
+    return Promise.resolve();
+  };
+
+  const verifyOtpWithServer = async (phone, otp) => {
+    console.log(`Verifying OTP ${otp} for ${phone}`);
+    // In a real app, you would call your backend API here
+    // to verify if the OTP matches what was sent
+    return Promise.resolve(otp === "123456"); // Simple mock - real OTPs would be random
+  };
+
   useEffect(() => {
     // Load profile data if exists
     const savedProfile = localStorage.getItem("userProfile");
@@ -22,28 +98,28 @@ const ProfilePage = () => {
       setProfileData(JSON.parse(savedProfile));
     }
   }, []);
-  
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setProfileData(prev => ({
+    setProfileData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
-  
+
   const handleProfilePhotoChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setProfileData(prev => ({
+        setProfileData((prev) => ({
           ...prev,
-          profilePhoto: e.target.result
+          profilePhoto: e.target.result,
         }));
       };
       reader.readAsDataURL(e.target.files[0]);
     }
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Save profile data to localStorage
@@ -55,7 +131,7 @@ const ProfilePage = () => {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="max-w-4xl mx-auto p-4">
         <header className="flex items-center mb-6">
-          <button 
+          <button
             className="text-blue-400 hover:text-blue-300 mr-4"
             onClick={() => window.history.back()}
           >
@@ -71,45 +147,72 @@ const ProfilePage = () => {
               <div className="relative w-48 h-48 bg-gray-700 border-2 border-blue-500">
                 {/* The actual profile photo */}
                 {profileData.profilePhoto ? (
-                  <img 
-                    src={profileData.profilePhoto} 
-                    alt="Profile" 
-                    className="w-full h-full object-cover" 
+                  <img
+                    src={profileData.profilePhoto}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-400">
                     <FaUser size={64} />
                   </div>
                 )}
-                
+
                 {/* Laser animation overlays */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                   {/* Top laser */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-blue-400 opacity-70 animate-laser-horizontal" style={{filter: 'blur(1px)', boxShadow: '0 0 8px 2px rgba(59, 130, 246, 0.8)'}}></div>
-                  
+                  <div
+                    className="absolute top-0 left-0 w-full h-1 bg-blue-400 opacity-70 animate-laser-horizontal"
+                    style={{
+                      filter: "blur(1px)",
+                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
+                    }}
+                  ></div>
+
                   {/* Right laser */}
-                  <div className="absolute top-0 right-0 w-1 h-full bg-blue-400 opacity-70 animate-laser-vertical" style={{filter: 'blur(1px)', boxShadow: '0 0 8px 2px rgba(59, 130, 246, 0.8)', animationDelay: '1s'}}></div>
-                  
+                  <div
+                    className="absolute top-0 right-0 w-1 h-full bg-blue-400 opacity-70 animate-laser-vertical"
+                    style={{
+                      filter: "blur(1px)",
+                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
+                      animationDelay: "1s",
+                    }}
+                  ></div>
+
                   {/* Bottom laser */}
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-400 opacity-70 animate-laser-horizontal" style={{filter: 'blur(1px)', boxShadow: '0 0 8px 2px rgba(59, 130, 246, 0.8)', animationDelay: '2s'}}></div>
-                  
+                  <div
+                    className="absolute bottom-0 left-0 w-full h-1 bg-blue-400 opacity-70 animate-laser-horizontal"
+                    style={{
+                      filter: "blur(1px)",
+                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
+                      animationDelay: "2s",
+                    }}
+                  ></div>
+
                   {/* Left laser */}
-                  <div className="absolute top-0 left-0 w-1 h-full bg-blue-400 opacity-70 animate-laser-vertical" style={{filter: 'blur(1px)', boxShadow: '0 0 8px 2px rgba(59, 130, 246, 0.8)', animationDelay: '3s'}}></div>
+                  <div
+                    className="absolute top-0 left-0 w-1 h-full bg-blue-400 opacity-70 animate-laser-vertical"
+                    style={{
+                      filter: "blur(1px)",
+                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
+                      animationDelay: "3s",
+                    }}
+                  ></div>
                 </div>
-                
+
                 {/* Camera button */}
                 <label className="absolute bottom-0 right-0 bg-blue-600 p-2 rounded-full cursor-pointer">
                   <FaCamera className="text-white" />
-                  <input 
-                    type="file" 
-                    className="hidden" 
-                    accept="image/*" 
-                    onChange={handleProfilePhotoChange} 
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleProfilePhotoChange}
                   />
                 </label>
               </div>
             </div>
-            
+
             {/* Full Name */}
             <div className="mb-4">
               <label className="block text-gray-300 mb-2 font-semibold">
@@ -126,7 +229,7 @@ const ProfilePage = () => {
                 required
               />
             </div>
-            
+
             {/* Email */}
             <div className="mb-4">
               <label className="block text-gray-300 mb-2 font-semibold">
@@ -152,11 +255,14 @@ const ProfilePage = () => {
                   onChange={handleInputChange}
                 />
                 <label htmlFor="isEmailVerified" className="text-gray-300">
-                  Email verified {profileData.isEmailVerified && <FaCheck className="inline text-green-500 ml-1" />}
+                  Email verified{" "}
+                  {profileData.isEmailVerified && (
+                    <FaCheck className="inline text-green-500 ml-1" />
+                  )}
                 </label>
               </div>
             </div>
-            
+
             {/* Phone */}
             <div className="mb-4">
               <label className="block text-gray-300 mb-2 font-semibold">
@@ -181,11 +287,14 @@ const ProfilePage = () => {
                   onChange={handleInputChange}
                 />
                 <label htmlFor="isPhoneVerified" className="text-gray-300">
-                  Phone verified {profileData.isPhoneVerified && <FaCheck className="inline text-green-500 ml-1" />}
+                  Phone verified{" "}
+                  {profileData.isPhoneVerified && (
+                    <FaCheck className="inline text-green-500 ml-1" />
+                  )}
                 </label>
               </div>
             </div>
-            
+
             {/* Address */}
             <div className="mb-4">
               <label className="block text-gray-300 mb-2 font-semibold">
@@ -201,7 +310,7 @@ const ProfilePage = () => {
                 rows="3"
               />
             </div>
-            
+
             {/* User Type */}
             <div className="mb-4">
               <label className="block text-gray-300 mb-2 font-semibold">
@@ -234,7 +343,7 @@ const ProfilePage = () => {
                 </label>
               </div>
             </div>
-            
+
             {/* Conditional Field - Institution */}
             <div className="mb-6">
               <label className="block text-gray-300 mb-2 font-semibold">
@@ -254,12 +363,16 @@ const ProfilePage = () => {
                 type="text"
                 name="institution"
                 className="w-full p-3 border border-gray-700 rounded-lg bg-gray-900 text-white"
-                placeholder={profileData.userType === "student" ? "Enter your college/school name" : "Enter your company name"}
+                placeholder={
+                  profileData.userType === "student"
+                    ? "Enter your college/school name"
+                    : "Enter your company name"
+                }
                 value={profileData.institution}
                 onChange={handleInputChange}
               />
             </div>
-            
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -294,8 +407,8 @@ const laserAnimationStyles = `
 `;
 
 // Add the styles to the document
-if (typeof document !== 'undefined') {
-  const styleEl = document.createElement('style');
+if (typeof document !== "undefined") {
+  const styleEl = document.createElement("style");
   styleEl.innerHTML = laserAnimationStyles;
   document.head.appendChild(styleEl);
 }
