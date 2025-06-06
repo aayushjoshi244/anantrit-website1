@@ -9,51 +9,46 @@ import {
   FaShoppingCart,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "./store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 import Button from "../components/Button.jsx";
 import UploadCode from "./UploadCode";
 import PostSection from "./posting.jsx";
+import toast from "react-hot-toast";
 
 const MainSection = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [activeSection, setActiveSection] = useState("posts"); // "posts" or "repository"
+  const { authUser, logout, isCheckingAuth } = useAuthStore();
+  const [activeSection, setActiveSection] = useState("posts");
   const [suggestedUsers, setSuggestedUsers] = useState([]);
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser) {
-      setUser(currentUser);
-    }
-  
-    useEffect(() => {
-    // Redirect to home if not authenticated
-    if (authUser === null && !useAuthStore.getState().isCheckingAuth) {
+    setSuggestedUsers(["Alice", "Bob", "Charlie"]);
+  }, []);
+
+  useEffect(() => {
+    if (!isCheckingAuth && !authUser) {
       navigate("/");
     }
-  }, [authUser, navigate]);
+  }, [authUser, isCheckingAuth, navigate]);
 
   const handleLogout = async () => {
     try {
       await logout();
       toast.success("Logged out successfully");
-      navigate("/"); // Redirect to home after logout
+      navigate("/");
     } catch (error) {
       toast.error("Failed to logout");
       console.error("Logout error:", error);
     }
   };
 
-  if (useAuthStore.getState().isCheckingAuth) {
-    return <div>Loading...</div>; // Or your loading spinner
+  if (isCheckingAuth) {
+    return <div>Loading...</div>;
   }
 
   if (!authUser) {
-    return null; // The useEffect will handle the redirect
+    return null;
   }
-    
-    setSuggestedUsers(["Alice", "Bob", "Charlie"]);
-  }, []);
 
   return (
     <div className="relative flex min-h-screen bg-gray-900 text-white">
@@ -90,7 +85,7 @@ const MainSection = () => {
             <FaUpload className="w-5 h-5 inline-block flex-shrink-0" />{" "}
             <span className="inline-block ml-2">Idea Git</span>
           </Button>
-          <Button 
+          <Button
             className="flex items-center gap-3 text-lg w-full justify-start"
             onClick={() => navigate("/create-post")}
           >
@@ -116,7 +111,7 @@ const MainSection = () => {
       {/* Main Content */}
       <div className="w-full max-w-4xl p-5 mx-auto">
         {activeSection === "posts" ? (
-          <PostSection user={user} />
+          <PostSection user={authUser} />
         ) : (
           <UploadCode />
         )}
@@ -137,10 +132,7 @@ const MainSection = () => {
 
         <Button
           className="flex items-center justify-center w-full py-2 mt-auto space-x-2"
-          onClick={() => {
-            localStorage.removeItem("currentUser");
-            window.location.reload();
-          }}
+          onClick={handleLogout}
         >
           <FaSignOutAlt className="w-5 h-5 inline-block flex-shrink-0" />
           <span className="inline-block ml-2">Logout</span>

@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
-import { SlideDown } from "react-slidedown";
-import "react-slidedown/lib/slidedown.css";
+import { motion, AnimatePresence } from "framer-motion";
 
 const FaqItem = ({ item, index }) => {
   const [activeId, setActiveId] = useState(null);
@@ -41,11 +40,21 @@ const FaqItem = ({ item, index }) => {
         </div>
       </div>
 
-      <SlideDown>
+      {/* ✅ Replacing SlideDown with AnimatePresence + motion.div */}
+      <AnimatePresence initial={false}>
         {activeId === item.id && (
-          <div className="body-3 px-7 py-3.5">{item.answer}</div>
+          <motion.div
+            className="body-3 px-7 py-3.5"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            {item.answer}
+          </motion.div>
         )}
-      </SlideDown>
+      </AnimatePresence>
 
       <div
         className={clsx(
@@ -59,4 +68,5 @@ const FaqItem = ({ item, index }) => {
     </div>
   );
 };
+
 export default FaqItem;

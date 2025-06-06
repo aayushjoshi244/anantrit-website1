@@ -7,7 +7,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore";
-import { axiosInstance } from "./lib/axios";
 import "./index.css";
 import Header from "./sections/Header";
 import Hero from "./sections/Hero";

@@ -12,9 +12,37 @@ import {
   FaSave,
   FaArrowLeft,
 } from "react-icons/fa";
+import { useAuthStore } from "../store/useAuthStore";
+import toast from "react-hot-toast";
 
 const ProfilePage = () => {
-  // Profile state
+  const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
+
+  const [selectedImg, setSelectedImage] = useState(null);
+
+  const handleImageupload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = async () => {
+      const base64Image = reader.result;
+      setSelectedImage(base64Image);
+      await updateProfile({ profilePic: base64Image });
+    };
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setProfileData({
+      ...profileData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
   const [profileData, setProfileData] = useState({
     fullName: "",
     email: "",
@@ -26,106 +54,6 @@ const ProfilePage = () => {
     institution: "", // college/school name or company name
     profilePhoto: null,
   });
-
-  const [otp, setOtp] = useState("");
-  const [showOtpModal, setShowOtpModal] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpError, setOtpError] = useState("");
-
-  const handleVerifyCheckbox = async (e) => {
-    if (!profileData.phone) {
-      alert("Please enter a phone number first");
-      return;
-    }
-
-    if (!profileData.isPhoneVerified) {
-      // Send OTP
-      try {
-        // Replace with your actual OTP sending API call
-        await sendOtpToPhone(profileData.phone);
-        setOtpSent(true);
-        setShowOtpModal(true);
-      } catch (error) {
-        console.error("Error sending OTP:", error);
-        setOtpError("Failed to send OTP");
-      }
-    } else {
-      // If unchecking, just update the state
-      handleInputChange(e);
-    }
-  };
-
-  const verifyOtp = async () => {
-    try {
-      // Replace with your actual OTP verification API call
-      const isValid = await verifyOtpWithServer(profileData.phone, otp);
-      if (isValid) {
-        setProfileData({
-          ...profileData,
-          isPhoneVerified: true,
-        });
-        setShowOtpModal(false);
-        setOtp("");
-        setOtpError("");
-      } else {
-        setOtpError("Invalid OTP. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-      setOtpError("Error verifying OTP");
-    }
-  };
-
-  // Mock functions - replace with actual API calls
-  const sendOtpToPhone = async (phone) => {
-    console.log(`OTP sent to ${phone}`);
-    // In a real app, you would call your backend API here
-    // which would then send an SMS with the OTP
-    return Promise.resolve();
-  };
-
-  const verifyOtpWithServer = async (phone, otp) => {
-    console.log(`Verifying OTP ${otp} for ${phone}`);
-    // In a real app, you would call your backend API here
-    // to verify if the OTP matches what was sent
-    return Promise.resolve(otp === "123456"); // Simple mock - real OTPs would be random
-  };
-
-  useEffect(() => {
-    // Load profile data if exists
-    const savedProfile = localStorage.getItem("userProfile");
-    if (savedProfile) {
-      setProfileData(JSON.parse(savedProfile));
-    }
-  }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setProfileData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleProfilePhotoChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfileData((prev) => ({
-          ...prev,
-          profilePhoto: e.target.result,
-        }));
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Save profile data to localStorage
-    localStorage.setItem("userProfile", JSON.stringify(profileData));
-    alert("Profile updated successfully!");
-  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -141,73 +69,37 @@ const ProfilePage = () => {
         </header>
 
         <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-          <form onSubmit={handleSubmit}>
-            {/* Profile Photo with Laser Animation */}
             <div className="flex justify-center mb-8">
-              <div className="relative w-48 h-48 bg-gray-700 border-2 border-blue-500">
-                {/* The actual profile photo */}
-                {profileData.profilePhoto ? (
+              <div
+                className="relative w-48 h-48 bg-gray-700 border-2 border-blue-500 rounded-lg overflow-hidden"
+                style={{
+                  animation: "pulse-border 2s ease-in-out infinite",
+                  boxShadow:
+                    "0 0 8px rgba(59, 130, 246, 0.4), 0 0 12px rgba(59, 130, 246, 0.3)",
+                }}
+              >
+                {/* Profile Photo */}
+                {selectedImg || authUser.profilePic ? (
                   <img
-                    src={profileData.profilePhoto}
+                    src={selectedImg || authUser.profilePic}
                     alt="Profile"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-lg"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-700 rounded-lg">
                     <FaUser size={64} />
                   </div>
                 )}
 
-                {/* Laser animation overlays */}
-                <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                  {/* Top laser */}
-                  <div
-                    className="absolute top-0 left-0 w-full h-1 bg-blue-400 opacity-70 animate-laser-horizontal"
-                    style={{
-                      filter: "blur(1px)",
-                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
-                    }}
-                  ></div>
-
-                  {/* Right laser */}
-                  <div
-                    className="absolute top-0 right-0 w-1 h-full bg-blue-400 opacity-70 animate-laser-vertical"
-                    style={{
-                      filter: "blur(1px)",
-                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
-                      animationDelay: "1s",
-                    }}
-                  ></div>
-
-                  {/* Bottom laser */}
-                  <div
-                    className="absolute bottom-0 left-0 w-full h-1 bg-blue-400 opacity-70 animate-laser-horizontal"
-                    style={{
-                      filter: "blur(1px)",
-                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
-                      animationDelay: "2s",
-                    }}
-                  ></div>
-
-                  {/* Left laser */}
-                  <div
-                    className="absolute top-0 left-0 w-1 h-full bg-blue-400 opacity-70 animate-laser-vertical"
-                    style={{
-                      filter: "blur(1px)",
-                      boxShadow: "0 0 8px 2px rgba(59, 130, 246, 0.8)",
-                      animationDelay: "3s",
-                    }}
-                  ></div>
-                </div>
-
-                {/* Camera button */}
+                {/* Camera Button */}
                 <label className="absolute bottom-0 right-0 bg-blue-600 p-2 rounded-full cursor-pointer">
                   <FaCamera className="text-white" />
                   <input
                     type="file"
                     className="hidden"
                     accept="image/*"
-                    onChange={handleProfilePhotoChange}
+                    onChange={handleImageupload}
+                    disabled={isUpdatingProfile}
                   />
                 </label>
               </div>
@@ -219,15 +111,9 @@ const ProfilePage = () => {
                 <FaUser className="inline mr-2" />
                 Full Name
               </label>
-              <input
-                type="text"
-                name="fullName"
-                className="w-full p-3 border border-gray-700 rounded-lg bg-gray-900 text-white"
-                placeholder="Enter your full name"
-                value={profileData.fullName}
-                onChange={handleInputChange}
-                required
-              />
+              <p className="w-full p-3 border border-gray-700 rounded-lg bg-gray-900 text-white">
+                {authUser?.fullName}
+              </p>
             </div>
 
             {/* Email */}
@@ -236,15 +122,9 @@ const ProfilePage = () => {
                 <FaEnvelope className="inline mr-2" />
                 Email Address
               </label>
-              <input
-                type="email"
-                name="email"
-                className="w-full p-3 border border-gray-700 rounded-lg bg-gray-900 text-white"
-                placeholder="Enter your email"
-                value={profileData.email}
-                onChange={handleInputChange}
-                required
-              />
+              <p className="w-full p-3 border border-gray-700 rounded-lg bg-gray-900 text-white">
+                {authUser?.email}
+              </p>
               <div className="mt-2 flex items-center">
                 <input
                   type="checkbox"
@@ -381,7 +261,19 @@ const ProfilePage = () => {
               <FaSave className="mr-2" />
               Save Profile
             </button>
-          </form>
+        </div>
+        <div className="mt-6 bg-base-300 rounded-xl p-6">
+          <h2 className="text-lg font-medium mb-4">Account Information</h2>
+          <div className="space-y-3 text-sm">
+            <div className="flex items-center justify-between py-2 border-b border-zinc-700">
+              <span>Member Since</span>
+              <span>{authUser.createdAt?.split("T")[0]}</span>
+            </div>
+            <div className="flex items-center justify-between py-2">
+              <span>Account Status</span>
+              <span className="text-green-500">Active</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
