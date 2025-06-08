@@ -1,26 +1,19 @@
 import clsx from "clsx";
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { SlideDown } from "react-slidedown";
+import "react-slidedown/lib/slidedown.css";
 
 const FaqItem = ({ item, index }) => {
   const [activeId, setActiveId] = useState(null);
-  const [contentHeight, setContentHeight] = useState(0);
-  const contentRef = useRef(null);
 
   const active = activeId === item.id;
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight);
-    }
-  }, [activeId]);
 
   return (
     <div className="relative z-2 mb-16">
       <div
         className="group relative flex cursor-pointer items-center justify-between gap-10 px-7"
         onClick={() => {
-          setActiveId(active ? null : item.id);
+          setActiveId(activeId === item.id ? null : item.id);
         }}
       >
         <div className="flex-1">
@@ -48,19 +41,11 @@ const FaqItem = ({ item, index }) => {
         </div>
       </div>
 
-      <AnimatePresence initial={false}>
-        {active && (
-          <motion.div
-            className="body-3 px-7 py-3.5 overflow-hidden"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: contentHeight, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
-          >
-            <div ref={contentRef}>{item.answer}</div>
-          </motion.div>
+      <SlideDown>
+        {activeId === item.id && (
+          <div className="body-3 px-7 py-3.5">{item.answer}</div>
         )}
-      </AnimatePresence>
+      </SlideDown>
 
       <div
         className={clsx(
@@ -74,5 +59,4 @@ const FaqItem = ({ item, index }) => {
     </div>
   );
 };
-
 export default FaqItem;
