@@ -11,7 +11,7 @@ export default {
         p3: "#C8EA80",
         p4: "#EAEDFF",
         p5: "#C4CBF5",
-        s1: "#080D27", // Ensure this is defined
+        s1: "#080D27",
         s2: "#0C1838",
         s3: "#334679",
         s4: "#1959AD",
@@ -50,11 +50,11 @@ export default {
         "19/20": "95%",
         22: "88px",
         100: "100px",
-        512: "512px",
         330: "330px",
         388: "388px",
         400: "400px",
         440: "440px",
+        512: "512px",
         640: "640px",
         960: "960px",
         1230: "1230px",
@@ -76,7 +76,7 @@ export default {
       },
       flex: {
         50: "0 0 50%",
-        320: "1px 0 320px",
+        320: "0 0 320px",
         300: "0 0 300px",
         540: "0 0 540px",
         280: "0 0 280px",
@@ -85,8 +85,5 @@ export default {
       },
     },
   },
-  plugins: [daisyui],
-  daisyui: {
-    themes: ["light", "dark", "cupcake","retro"],
-  },
+  plugins: [],
 };

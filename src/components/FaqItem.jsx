@@ -1,18 +1,26 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const FaqItem = ({ item, index }) => {
   const [activeId, setActiveId] = useState(null);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef(null);
 
   const active = activeId === item.id;
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setContentHeight(contentRef.current.scrollHeight);
+    }
+  }, [activeId]);
 
   return (
     <div className="relative z-2 mb-16">
       <div
         className="group relative flex cursor-pointer items-center justify-between gap-10 px-7"
         onClick={() => {
-          setActiveId(activeId === item.id ? null : item.id);
+          setActiveId(active ? null : item.id);
         }}
       >
         <div className="flex-1">
@@ -40,18 +48,16 @@ const FaqItem = ({ item, index }) => {
         </div>
       </div>
 
-      {/* ✅ Replacing SlideDown with AnimatePresence + motion.div */}
       <AnimatePresence initial={false}>
-        {activeId === item.id && (
+        {active && (
           <motion.div
-            className="body-3 px-7 py-3.5"
+            className="body-3 px-7 py-3.5 overflow-hidden"
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: contentHeight, opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ overflow: "hidden" }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
           >
-            {item.answer}
+            <div ref={contentRef}>{item.answer}</div>
           </motion.div>
         )}
       </AnimatePresence>
